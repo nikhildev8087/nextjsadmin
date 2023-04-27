@@ -17,7 +17,6 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 const Sidebar = ({collapse}) => {
     const [menuOpen, setMenuOpen] = useState({setting:false, project:false});
 console.log("menuopen", menuOpen)
-
     const router = useRouter()
   return (
     <div className={`sidebar  h-screen bg-white dark:bg-slate-900/75  backdrop-blur dark:text-slate-400 text-slate-600 flex flex-col fixed top-0 left-0 z-50  px-4 py-6 ${collapse ? "hidden transition-all duration-150 ease-in" : "w-64 block transition-all duration-150 ease-out"}`}>
