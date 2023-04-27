@@ -1,18 +1,37 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import { useDarkMode } from "@/hook/useDarkMode";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import MenuIcon from '@mui/icons-material/Menu';
+import { ThemeContext, ThemeProvider } from "@/context/themeContext";
 
 const AdminLayout = ({ children }) => {
   const [showMenu, setShowMenu] = useState([]);
   const [isDarkMode, toggelDarkMode] = useDarkMode();
   const [collapse, setCollapse] = useState(false)
 
+   const {theme, toggelTheme} = useContext(ThemeContext)
+  console.log(theme)
+
+
   const expandHandler = () => {
     setCollapse(!collapse)
   }
+
+  useEffect(()=> {
+
+ const themeName=   localStorage.getItem("theme")
+ console.log(themeName)
+
+ const body = document.body;
+ if (theme === 'dark') {
+   body.classList.add("dark");
+ } else {
+   body.classList.remove("dark");
+ }
+
+  },[theme, children])
 
   console.log("collapse value",collapse)
 
@@ -21,9 +40,8 @@ const AdminLayout = ({ children }) => {
       <div className="header dark:border-slate-300/10 backdrop-blur sticky border-b border-slate-900/10  bg-white dark:text-white text-black dark:bg-slate-900/75 mb-4 top-0 right-0 w-full flex items-center justify-between p-4 z-[100]">
         <button onClick={expandHandler}><MenuIcon/></button>
         <span>Header</span>
-        <button className="bg-gray" onClick={toggelDarkMode}>
-          {" "}
-          {isDarkMode ? <LightModeIcon/> :<DarkModeIcon/>}
+        <button className="bg-gray" onClick={toggelTheme}>
+          {theme === 'dark' ? <LightModeIcon/> :<DarkModeIcon/>}
         </button>
       </div>
       <Sidebar mode={isDarkMode} collapse={collapse} />
