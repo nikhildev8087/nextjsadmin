@@ -16,7 +16,6 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 
 const Sidebar = ({collapse}) => {
     const [menuOpen, setMenuOpen] = useState({setting:false, project:false});
-console.log("menuopen", menuOpen)
     const router = useRouter()
     
   return (
