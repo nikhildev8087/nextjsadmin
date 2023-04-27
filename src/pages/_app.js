@@ -1,5 +1,26 @@
-import '@/styles/globals.css'
+import "@/styles/globals.css";
+import { ThemeContext, ThemeProvider } from "@/context/themeContext";
+import { useContext, useEffect } from "react";
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+ function App({ Component, pageProps }) {
+
+  const {theme, toggelTheme} = useContext(ThemeContext)
+
+
+  // useEffect(() => {
+  //   const body = document.body;
+  //   if (theme === 'dark') {
+  //     body.classList.add("dark");
+  //   } else {
+  //     body.classList.remove("dark");
+  //   }
+  // }, [theme]);
+
+  return (
+    <ThemeProvider>
+      <Component {...pageProps}/>
+    </ThemeProvider>
+  );
 }
+
+export default App;
