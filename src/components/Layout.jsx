@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import { useDarkMode } from "@/hook/useDarkMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -9,7 +10,7 @@ import { useRouter } from "next/router";
 
 const AdminLayout = ({ children }) => {
   const [showMenu, setShowMenu] = useState([]);
-  // const [isDarkMode, toggelDarkMode] = useDarkMode();
+  const [isDarkMode, toggelDarkMode] = useDarkMode();
   const [collapse, setCollapse] = useState(false);
 
   const router = useRouter();
