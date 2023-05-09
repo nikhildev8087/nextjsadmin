@@ -12,22 +12,51 @@ import CreateIcon from "@mui/icons-material/Create";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ProductModal from "@/components/ProductModal";
+import { useEffect } from "react";
+import axios from "axios";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { copyToClipboard } from 'react-copy-to-clipboard';
 
 const report = () => {
-  const[reportState, setReportState] = useState({
-    modalOpen:false,
-  })
-  const [modalOpen, setModalOpen] = useState(false)
+  const [reportState, setReportState] = useState({
+    modalOpen: false,
+  });
+  const [modalOpen, setModalOpen] = useState(false);
+  const [data, setData] = useState([]);
+  const [copied, setCopied] = useState(false);
+
+
+  const handleCopy = (code) => {
+    // copyToClipboard(code.toString());
+    console.log(copy)
+    setCopied(true);
+  };
+
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/products");
+        setData(response.data);
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      }
+    };
+    fetchBlogPosts();
+  }, []);
 
   return (
     <AdminLayout>
       <div className="p-5 bg-white dark:bg-slate-900/75 rounded">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold">Products</h2>
-          <button 
-          // onClick={() => setReportState((prev) =>  ({...prev, modalOpen:true}))}
-          onClick={() => setModalOpen(true)}
-           className="px-3 py-2 bg-cyan-500 rounded text-white">
+          <button
+            // onClick={() => setReportState((prev) =>  ({...prev, modalOpen:true}))}
+            onClick={() => setModalOpen(true)}
+            className="px-3 py-2 bg-cyan-500 rounded text-white"
+          >
             + Create Product
           </button>
         </div>
@@ -80,36 +109,86 @@ const report = () => {
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell className="p-2" align="left" component="th" scope="row">
+              <TableCell
+                className="p-2"
+                align="left"
+                component="th"
+                scope="row"
+              >
                 <div className="flex items-center justify-start">
-                  <img className="h-12 w-12 bg-slate-400 rounded-lg"/>
-                  <span className=" text-sm ml-2 text-slate-400 dark:text-slate-200">Admas Airpod x-Zon</span>
+                  <img className="h-12 w-12 bg-slate-400 rounded-lg" />
+                  <span className=" text-sm ml-2 text-slate-400 dark:text-slate-200">
+                    Admas Airpod x-Zon
+                  </span>
                 </div>
               </TableCell>
-              <TableCell className="text-sm text-slate-400 dark:text-slate-200" align="right">Airpod</TableCell>
-              <TableCell className="text-sm text-slate-400 dark:text-slate-200" align="right">$289.50</TableCell>
-              <TableCell className="text-sm text-slate-400 dark:text-slate-200" align="right">120</TableCell>
-              <TableCell className="text-sm text-slate-400 dark:text-slate-200" align="right">Out of Stock</TableCell>
-              <TableCell className="text-sm text-slate-400 dark:text-slate-200" align="right">5.0(150 votes)</TableCell>
-              <TableCell className="text-sm text-slate-400 dark:text-slate-200" align="right">
+              <TableCell
+                className="text-sm text-slate-400 dark:text-slate-200"
+                align="right"
+              >
+                Airpod
+              </TableCell>
+              <TableCell
+                className="text-sm text-slate-400 dark:text-slate-200"
+                align="right"
+              >
+                $289.50
+              </TableCell>
+              <TableCell
+                className="text-sm text-slate-400 dark:text-slate-200"
+                align="right"
+              >
+                120
+              </TableCell>
+              <TableCell
+                className="text-sm text-slate-400 dark:text-slate-200"
+                align="right"
+              >
+                Out of Stock
+              </TableCell>
+              <TableCell
+                className="text-sm text-slate-400 dark:text-slate-200"
+                align="right"
+              >
+                5.0(150 votes)
+              </TableCell>
+              <TableCell
+                className="text-sm text-slate-400 dark:text-slate-200"
+                align="right"
+              >
                 <div className="flex items-center justify-end gap-1">
-                  <VisibilityIcon className="text-sky-500 text-base"/>
-                  <CreateIcon className="text-cyan-400 text-base"/>
-                  <AddShoppingCartIcon className="text-lime-400 text-base"/>
-                  <DeleteIcon className="text-rose-400 text-base"/>
+                  <VisibilityIcon className="text-sky-500 text-base" />
+                  <CreateIcon className="text-cyan-400 text-base" />
+                  <AddShoppingCartIcon className="text-lime-400 text-base" />
+                  <DeleteIcon className="text-rose-400 text-base" />
                 </div>
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
-        <ProductModal 
-        // modalOpen={reportState.modalOpen} 
-        // setModalOpen={setReportState.modalOpen} 
-        modalOpen={modalOpen} 
-        setModalOpen={setModalOpen} 
-        data={"test"}/>
+        <ProductModal
+          // modalOpen={reportState.modalOpen}
+          // setModalOpen={setReportState.modalOpen}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          data={"test"}
+        />
       </div>
-    </AdminLayout> 
+
+      <div>
+        {data?.map((ele,idx)=> {
+          return(<>
+            <p>{ele?.name}</p>
+
+            <div className="bg-slate-200">
+      <SyntaxHighlighter className="bg-slate-200" language={'jsx'}>{ele?.codeSnippet}</SyntaxHighlighter>
+      <button onClick={()=>handleCopy(ele?.codeSnippet)}>{copied ? 'Copied!' : 'Copy'}</button>
+    </div>
+          </>
+          )
+        })}
+      </div>
+    </AdminLayout>
   );
 };
 
