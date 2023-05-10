@@ -47,7 +47,7 @@ const login = () => {
             setFieldValue,
           }) => {
             return (
-              <form onSubmit={handleSubmit}>
+              <form action="/api/login" onSubmit={handleSubmit}>
                 <div className=" mb-2">
                   <label className="mr-2" htmlFor="email">
                     Email:{" "}

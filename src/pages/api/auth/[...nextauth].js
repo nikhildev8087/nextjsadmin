@@ -14,28 +14,35 @@ export default NextAuth({
       clientSecret: "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",
     }),
     CredentialsProvider({
-      name: "Credentials",
-      async authorize(credentials, req) {
-        connectMongo().catch(err => {err: "connection failed...!"});
+      // name: "Credentials",
+      async authorize(credentials) {
+        const client = await connectMongo()
+        const userCollection = client.db().collection('users');
+        const user = await userCollection.findOne({email: credentials.email});
 
-        //Check user existance
-        const result = await Users.findOne({ email: credentials.email });
-        if (!result) {
-          throw new Erorr("No user found with Email please sign up..!");
+        if(!user || user.password !==credentials.password){
+          client.close();
+          throw new Error('Invalid Email or Password')
         }
 
-        //compare
-        const checkPassword = await compare(
-          credentials.password,
-          result.password
-        );
-
-        //incorrect password
-        if (!checkPassword || result.email !== credentials.email) {
-          throw new Error("User name of password doesnt match");
-        }
-        return result;
+        client.close();
+        return {email:user.email};
       },
     }),
   ],
+
+  pages:{
+    signIn:'/auth/login',
+    signOut:'/auth/logout',
+    error:'auth/error'
+  },
+  session:{
+    jwt:true
+  },
+  callbacks: {
+    async session(session, user) {
+      session.user = user;
+      return Promise.resolve(session);
+    }
+    }
 });

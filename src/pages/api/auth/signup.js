@@ -2,27 +2,31 @@ import connectMongo from "@/database/conn";
 import Users from "@/model/Schema";
 import { hash } from "bcryptjs";
 
+export default async function handler(req, res) {
+  //only post method is accepted
+  if (req.method === "POST") {
+    const { username, email, password } = req.body;
+    if(!req.body) return res.status(404).json({error: "Dont have form Data...!"});
+    try {
+      await connectMongo();
 
-export default async function handler(req,res){
-    connectMongo().catch(error => res.json({error:"Connection Failed...!"}))
+      //check if user is already exist
+      const existingUser = await Users.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
 
-    //only post method is accepted
-    if(req.method === 'POST'){
-
-        if(!req.body) return res.status(404).json({error: "Dont have form Data...!"});
-        const {username, email, password} = req.body;
-        console.log(req.body)
-
-        //check duplicate user
-        const checkexisting = await Users.findOne({email});
-        if(checkexisting) return res.status(422).json({message:"User Already Exists..!"});
-
-        //hash password
-        Users.create({ username, email, password : await hash(password, 12)}, function(err, data){
-            if(err) return res.status(404).json({err})
-            res.status(201).json({status: true, user:data})
-        })
-    } else{
-        res.status(500).json({message: "HTTP method not valid only POST Accepted"})
+      const hashedPassword = await hash(password, 12);
+      const user = await Users.create({
+        username,
+        email,
+        password: hashedPassword,
+      });
+      res.status(201).json({ status: true, user });
+    } catch (err) {
+      res.status(500).json({ err });
     }
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
+  }
 }
