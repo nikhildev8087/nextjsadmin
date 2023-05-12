@@ -1,11 +1,33 @@
 import React from "react";
 import { Formik } from "formik";
+import axios from "axios";
+import { notification } from "antd";
+import { useRouter } from "next/router";
 
 const register = () => {
 
-    const handleSubmit = (value) => {
-        console.log(value)
-    }
+  const router = useRouter()
+
+  const handleSubmit = (value, { resetForm }) => {
+    console.log(value);
+    axios
+      .post("http://localhost:3000/api/auth/signup", value)
+      .then((res) => {
+        notification["success"]({
+          message:"user Created successfully..!"
+        })
+        console.log(res?.data?.token);
+        localStorage.setItem("login_token", res?.data?.token)
+        router.push("/login")
+      })
+      .catch((err) => {
+        notification["error"]({
+          message: err?.response?.data?.message,
+        });
+        console.log(err?.response?.data?.message);
+      });
+    resetForm();
+  };
 
     const validateData = (value) => {
         const error = {};
@@ -21,6 +43,9 @@ const register = () => {
             error.password="Please enter password"
         }
 
+        if(!value.confirmPassword){
+          error.confirmPassword = "Please enter password"
+        }
         if(value.password !== value.confirmPassword){
             error.confirmPassword ="Password does not matched"
         }
@@ -31,10 +56,13 @@ const register = () => {
 
 
   return (
-    <div className="py-12 bg-slate-700  p-4">
-      <h2 className="text-cente text-xl font-bold mb-2">Register page </h2>
+    <div className="bg-[#1E293B] dark:bg-gray-300 h-screen flex items-center justify-center">
+    <div className="px-20 py-20 ">
+      <div className="bg-[#E2E8F0] p-8 rounded-lg">
+        <h2 className="text-center font-bold text-2xl text-slate-700 mb-4 ">
+          Register
+        </h2>
 
-      <div className="p-4">
         <Formik
           initialValues={{
             username: "",
@@ -49,68 +77,104 @@ const register = () => {
             values,
             errors,
             handleBlur,
-            handleSubmit,
-            resetForm,
-            touched,
             handleChange,
+            handleSubmit,
+            handleReset,
+            resetForm,
+            setFieldValue,
+            touched
           }) => {
             return (
-              <form onSubmit={handleSubmit}>
-                <div className="mb-2">
-                  <label htmlFor="username">User Name: </label>
+              <form action="/api/login" onSubmit={handleSubmit}>
+                <div className=" mb-2 grid grid-cols">
+                  <label className="mr-2 text-slate-500 text-sm" htmlFor="username">
+                    User Name
+                  </label>
                   <input
-                    value={values.username}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    type="text"
+                    className="bg-slate-400 p-1 rounded focus:outline-0"
                     name="username"
                     id="username"
-                  />
-                </div>
-                <div className="mb-2">
-                  <label htmlFor="email">Email: </label>
-                  <input
-                    value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    type="email"
+                    value={values.username}
+                    type="text"
+                  />
+                  {errors?.username && touched?.username && (<p className="text-sm text-rose-700">{errors.username}</p>)}
+                </div>
+
+                <div className=" mb-2 grid grid-cols">
+                  <label className="mr-2 text-slate-500 text-sm" htmlFor="email">
+                    Email
+                  </label>
+                  <input
+                    className="bg-slate-400 p-1 rounded focus:outline-0"
                     name="email"
                     id="email"
-                  />
-                </div>
-
-                <div className="mb-2">
-                  <label htmlFor="password">Password: </label>
-                  <input
-                    value={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    type="password"
+                    value={values.email}
+                    type="email"
+                  />
+                  {errors?.email && touched?.email && (<p className="text-sm text-rose-700">{errors.email}</p>)}
+                </div>
+
+                <div className="mb-2 grid grid-cols">
+                  <label className="mr-2 text-slate-500 text-sm text-sm " htmlFor="password">
+                    Password
+                  </label>
+                  <input
+                    className="bg-slate-400 p-1 rounded w-60 focus:slate-400 active:slate-400 focus:outline-0"
                     name="password"
                     id="password"
-                  />
-                </div>
-
-                <div className="mb-2">
-                  <label htmlFor="confirmPassword">Confirm Password: </label>
-                  <input
-                    value={values.confirmPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    value={values.password}
                     type="password"
+                  />
+                  {errors?.password && touched?.password && (<p className="text-sm text-rose-700">{errors.password}</p>)}
+
+                </div>
+
+                <div className="mb-2 grid grid-cols">
+                  <label className="mr-2 text-slate-500 text-sm " htmlFor="confirmPassword">
+                   Confirm Password
+                  </label>
+                  <input
+                    className="bg-slate-400 p-1 rounded w-60 focus:slate-400 active:slate-400 focus:outline-0"
                     name="confirmPassword"
                     id="confirmPassword"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.confirmPassword}
+                    type="confirmPassword"
                   />
+                  {errors?.confirmPassword && touched?.confirmPassword && (<p className="text-sm text-rose-700">{errors.confirmPassword}</p>)}
+                  
                 </div>
-                <div>
-                  <button className="py-2 px-4 bg-indigo-200 rounded text-slate-700" type="submit">Register</button>
+
+                <div className="mt-2">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-gray-700 text-white rounded bg-slate-200 mb-2 w-full mt-4 hover:bg-slate-700"
+                  >
+                    Register
+                  </button>
+                  <p>Already have account ? <span className="cursor-pointer text-indigo-700 mt-2" onClick={() => router.push("/login")}>Login</span></p>
                 </div>
               </form>
             );
           }}
         </Formik>
+
+        {/* <button
+        className="px-4 py-2 rounded bg-slate-200 w-full"
+        onClick={googleSignInHandler}
+      >
+        Login with Google
+      </button> */}
       </div>
     </div>
+  </div>
   );
 };
 

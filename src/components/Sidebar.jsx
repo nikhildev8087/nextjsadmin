@@ -13,6 +13,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import ViewComfyIcon from '@mui/icons-material/ViewComfy';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import { Divider } from "antd";
 
 const Sidebar = ({collapse}) => {
     const [menuOpen, setMenuOpen] = useState({
@@ -32,7 +33,7 @@ const Sidebar = ({collapse}) => {
       </Link>
       </li>
       <li className="hover:bg-sky-500/75 hover:text-sky-50 rounded dark:hover:bg-slate-600/75 dark:hover:text-slate-300 mb-1">
-      <Link className={`p-2 flex items-center justify-between ${router.pathname =="/report" ? "active" : ""}`} href="/report">
+      <Link className={`p-2 flex items-center justify-between ${router.pathname =="admin/report" ? "active" : ""}`} href="admin/report">
         <div className="text-sm flex items-center"> <EmailIcon className="w-5 h-5"/> <span className="ml-2">Email</span></div> 
       </Link>
       </li>
@@ -83,6 +84,8 @@ const Sidebar = ({collapse}) => {
         <div className="text-sm flex items-center"> <ViewComfyIcon className="w-5 h-5"/> <span className="ml-2">UI Element</span></div>
       </Link>
       </li>
+      <Divider/>
+      <div className="mt-4 text-base cursor-pointer" onClick={()=> {router.push("/login")}}>logout</div>
       {/* <script src="../components/menu.js"></script> */}
     </div>
   );

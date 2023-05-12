@@ -18,6 +18,8 @@ import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined
 import ContactsOutlinedIcon from '@mui/icons-material/ContactsOutlined';
 import { Divider } from "@mui/material";
 import dynamic from "next/dynamic";
+import { motion } from 'framer-motion';
+
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -53,9 +55,34 @@ const dashboard = ({}) => {
     data: [80, 50, 30, 40, 100, 20],
   }]
 
+
+  const icon = {
+    hidden: {
+      pathLength: 0,
+      fill: "rgba(255, 255, 255, 0)"
+    },
+    visible: {
+      pathLength: 1,
+      fill: "rgba(255, 255, 255, 1)"
+    }
+  }
+
   return (
     <AdminLayout>
       <div className=" grid grid-cols-3 gap-4">
+      <motion.div initial="hidden" animate="visible" variants={{
+  hidden: {
+    scale: .8,
+    opacity: 0
+  },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: {
+      delay: .4
+    }
+  },
+}}>
         <SalesCard
           icon={
             <PieChartOutlineOutlinedIcon className="text-sky-500/75 dark:text-sky-200" />
@@ -65,6 +92,16 @@ const dashboard = ({}) => {
           growthRate={1.5}
           growth={"up"}
         />
+        </motion.div>
+
+        <motion.div whileHover={{
+  scale: 1.2,
+  transition: {
+    duration: .2
+  }
+}}>
+
+
         <SalesCard
           icon={
             <BusinessCenterOutlinedIcon className="text-sky-500/75 dark:text-sky-200" />
@@ -74,6 +111,7 @@ const dashboard = ({}) => {
           growthRate={1.5}
           growth={"up"}
         />
+        </motion.div>
         <SalesCard
           icon={
             <PeopleAltOutlinedIcon className="text-sky-500/75 dark:text-sky-200" />
@@ -113,6 +151,13 @@ const dashboard = ({}) => {
                   aria-haspopup="true"
                   onClick={handleClick}
                 >
+                  <motion.path
+                   d="M0 100V0l50 50 50-50v100L75 75l-25 25-25-25z"
+                   variants={icon}
+                   initial="hidden"
+                   animate="visible"
+                    >
+                  </motion.path>
                   <MoreHorizOutlinedIcon className="dark:text-slate-400 text-slate-600" />
                 </IconButton>
                 <Menu

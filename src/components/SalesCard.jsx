@@ -4,6 +4,7 @@ import TrendingDownOutlinedIcon from "@mui/icons-material/TrendingDownOutlined";
 
 const SalesCard = ({ icon, value, desc, growth, growthRate }) => {
   return (
+    
     <div className="bg-white dark:bg-slate-900/75 rounded p-5">
       <div className="flex items-center justify-between mb-4">
         <div>

@@ -20,11 +20,12 @@ export default async function handler(req, res) {
       const user = await Users.create({
         username,
         email,
+        login:false,
         password: hashedPassword,
       });
       res.status(201).json({ status: true, user });
     } catch (err) {
-      res.status(500).json({ err });
+      res.status(500).json({ err:"unhandled error" });
     }
   } else {
     res.status(405).json({ message: "Method not allowed" });
