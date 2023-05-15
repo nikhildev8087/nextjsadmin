@@ -5,6 +5,7 @@ const userSchema = new Schema({
     email:String,
     password:String,
     login:Boolean,
+    createdAt:{default: Date.now}
 })
 
 const Users = models.user || model('user', userSchema);

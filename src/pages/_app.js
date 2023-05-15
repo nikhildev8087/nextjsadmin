@@ -16,11 +16,11 @@ function App({ Component, pageProps }) {
   // }, [theme]);
 
   return (
-    <SessionProvider session={pageProps.session}>
+    // <SessionProvider session={pageProps.session}>
       <ThemeProvider>
         <Component {...pageProps} />
       </ThemeProvider>
-     </SessionProvider>
+    //  </SessionProvider>
   );
 }
 

@@ -8,11 +8,11 @@ import { ThemeContext, ThemeProvider } from "@/context/themeContext";
 import Breadcrumb from "./Breadcrumb";
 import { useRouter } from "next/router";
 import { Avatar, Badge, Input, InputBase } from "@mui/material";
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import EmailIcon from '@mui/icons-material/Email';
-
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import EmailIcon from "@mui/icons-material/Email";
+import { Dropdown } from "antd";
 
 const AdminLayout = ({ children }) => {
   const [showMenu, setShowMenu] = useState([]);
@@ -20,6 +20,32 @@ const AdminLayout = ({ children }) => {
   const [collapse, setCollapse] = useState(false);
 
   const router = useRouter();
+  const items = [
+    {
+      key: '1',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+          1st menu item
+        </a>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+          2nd menu item
+        </a>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+          3rd menu item
+        </a>
+      ),
+    },
+  ];
 
   const { theme, toggelTheme } = useContext(ThemeContext);
   console.log(theme);
@@ -49,34 +75,37 @@ const AdminLayout = ({ children }) => {
           : "pl-72 transition-all duration-150 ease-out "
       }`}
     >
-
       <div className="header dark:border-slate-300/10 backdrop-blur sticky border-b border-slate-900/10  bg-white/75 dark:text-white text-black dark:bg-slate-900/75 mb-4 top-0 right-0 w-full flex items-center justify-between z-[100] shadow-lg shadow-slate-300/50 dark:shadow-gray-600/25 px-4">
         <div className="flex items-center justify-center">
-        <button className="p-2" onClick={expandHandler}>
-          <MenuIcon />
-        </button>
-        <div className=" m-3 border rounded-lg">
-          <InputBase className="p-0"  sx={{ ml: 1, flex: 1 }} type="text" />
-          <IconButton type="button" sx={{ p: '5px' }} aria-label="search">
-        <SearchIcon />
-      </IconButton>
-        </div>
+          <button className="p-2" onClick={expandHandler}>
+            <MenuIcon />
+          </button>
+          <div className=" m-3 border rounded-lg">
+            <InputBase className="p-0" sx={{ ml: 1, flex: 1 }} type="text" />
+            <IconButton type="button" sx={{ p: "5px" }} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </div>
         </div>
 
         <div className="flex items-center justify-between gap-5">
-        <button className="bg-gray" onClick={toggelTheme}>
-          {theme === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
-        </button>
-          <Badge color="secondary" variant="dot" >
-          <EmailIcon />
-        </Badge>
+          <button className="bg-gray" onClick={toggelTheme}>
+            {theme === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+          </button>
+          <Badge color="secondary" variant="dot">
+            <EmailIcon />
+          </Badge>
           <Badge color="secondary" badgeContent={4}>
-          <NotificationsIcon />
-        </Badge>
-          <Avatar/>
+            <NotificationsIcon />
+          </Badge>
+          <Dropdown
+            menu={{items}}
+            placement="bottomRight"
+          >
+            <Avatar />
+          </Dropdown>
         </div>
       </div>
-
 
       <Sidebar mode={isDarkMode} collapse={collapse} />
       <div

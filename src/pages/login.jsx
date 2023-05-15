@@ -109,7 +109,7 @@ const login = () => {
                   <div className="mt-2">
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-gray-700 text-white rounded bg-slate-200 mb-2 w-full mt-4 hover:bg-slate-700"
+                      className="px-4 py-2 bg-gray-500 text-white rounded mb-2 w-full mt-4 hover:bg-slate-700"
                     >
                       Login
                     </button>
