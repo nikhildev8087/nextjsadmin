@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import EmailIcon from '@mui/icons-material/Email';
+import CategoryIcon from '@mui/icons-material/Category';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SecurityIcon from '@mui/icons-material/Security';
@@ -28,13 +29,13 @@ const Sidebar = ({collapse}) => {
         <span className="text-center text-3xl font-black">Logo</span>
       </div>
       <li className="hover:bg-sky-500/75 hover:text-sky-50 rounded dark:hover:bg-slate-600/75 dark:hover:text-slate-300 mb-1">
-      <Link className={`p-2 flex items-center justify-between ${router.pathname =="/dashboard" ? "active" : ""}`} href="/dashboard">
+      <Link className={`p-2 flex items-center justify-between ${router.pathname =="/admin" ? "active" : ""}`} href="/admin">
         <div className="text-sm flex items-center"> <AppShortcutIcon className="w-5 h-5"/> <span className="ml-2">App</span></div> 
       </Link>
       </li>
       <li className="hover:bg-sky-500/75 hover:text-sky-50 rounded dark:hover:bg-slate-600/75 dark:hover:text-slate-300 mb-1">
-      <Link className={`p-2 flex items-center justify-between ${router.pathname =="admin/report" ? "active" : ""}`} href="admin/report">
-        <div className="text-sm flex items-center"> <EmailIcon className="w-5 h-5"/> <span className="ml-2">Email</span></div> 
+      <Link className={`p-2 flex items-center justify-between ${router.pathname =="admin/product" ? "active" : ""}`} href="admin/product">
+        <div className="text-sm flex items-center"> <CategoryIcon className="w-5 h-5"/> <span className="ml-2">Product</span></div> 
       </Link>
       </li>
 

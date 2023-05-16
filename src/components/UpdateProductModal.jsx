@@ -2,7 +2,7 @@ import { Modal } from 'antd'
 import React from 'react'
 
 const UpdateProductModal = ({updateModal, setUpdateModal, data}) => {
-    console.log("update product data => ", data)
+    // console.log("update product data => ", data)
   return (
     <div>
       <Modal

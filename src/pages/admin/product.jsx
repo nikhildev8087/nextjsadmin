@@ -19,7 +19,7 @@ import { copyToClipboard } from "react-copy-to-clipboard";
 import UpdateProductModal from "@/components/UpdateProductModal";
 import { notification } from "antd";
 
-const report = () => {
+const product = () => {
   const [reportState, setReportState] = useState({
     modalOpen: false,
     data: [],
@@ -31,7 +31,7 @@ const report = () => {
   const [copied, setCopied] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [state, setState] = useState([]);
-  const [updateData, setUpdateData] = useState();
+  const [updateData, setUpdateData] = useState(null);
 
   const deleteProductHandler = (id) => {
     try {
@@ -88,7 +88,7 @@ const report = () => {
           <button
             // onClick={() => setReportState((prev) =>  ({...prev, modalOpen:true}))}
             onClick={() => {
-              setModalOpen(true), setUpdateData();
+              setModalOpen(true), setUpdateData(null);
             }}
             className="px-3 py-2 bg-cyan-500 rounded text-white"
           >
@@ -219,7 +219,7 @@ const report = () => {
           // setModalOpen={setReportState.modalOpen}
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
-          data={updateData}
+          data={updateData ? updateData : null}
         />
         <UpdateProductModal
           updateModal={updateModal}
@@ -250,4 +250,4 @@ const report = () => {
   );
 };
 
-export default report;
+export default product;

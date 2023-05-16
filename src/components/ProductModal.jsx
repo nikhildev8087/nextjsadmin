@@ -7,7 +7,7 @@ const ProductModal = ({ modalOpen, setModalOpen, data }) => {
   const handleAddData = async (value, data) => {
     console.log(value);
     console.log(data);
-    if (data ? true : false) {
+    if (data ===  null ? true : false) {
       try {
       await  axios.post("http://localhost:3000/api/products", {
           ...value,
@@ -70,7 +70,7 @@ const ProductModal = ({ modalOpen, setModalOpen, data }) => {
       error.price = "Please Enter the price";
     }
 
-    console.log(error);
+    // console.log(error);
 
     return error;
   };
